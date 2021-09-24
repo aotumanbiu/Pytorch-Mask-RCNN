@@ -63,8 +63,7 @@ python predict.py
 ### 补充
 
 **示例数据集：**  
-**[PennFudanPed](https://www.cis.upenn.edu/~jshi/ped_html/)**  
-下载后直接放在与predict.py同级目录即可。
+**[PennFudanPed](https://www.cis.upenn.edu/~jshi/ped_html/)**  下载并解压，然后把PennFudanPed文件夹直接放在与predict.py同级目录即可。
 
 **权重下载：**  
 **[MaskRCNN_9.pth](链接: https://pan.baidu.com/s/1qCODjG1AuhxNlc-ANH3m0Q 提取码: i8c5 )**
