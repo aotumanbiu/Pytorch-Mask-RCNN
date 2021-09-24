@@ -63,13 +63,13 @@ python predict.py
 ### 补充
 
 **示例数据集：**  
-**[PennFudanPed](https://www.cis.upenn.edu/~jshi/ped_html/))**
+**[PennFudanPed](https://www.cis.upenn.edu/~jshi/ped_html/)**
 
 **权重下载：**  
 **[MaskRCNN_9.pth](链接: https://pan.baidu.com/s/1qCODjG1AuhxNlc-ANH3m0Q 提取码: i8c5 )**
 
 ### 博客推荐
 
-​		**1.     [实例分割模型Mask-RCNN网络原理与架构详解](https://blog.csdn.net/qq_27825451/article/details/89677068))**
+​		**1.     [实例分割模型Mask-RCNN网络原理与架构详解](https://blog.csdn.net/qq_27825451/article/details/89677068)**
 
-​		**2.     [实例分割模型Mask R-CNN详解：从R-CNN，Fast R-CNN，Faster R-CNN再到Mask R-CNN](https://blog.csdn.net/jiongnima/article/details/79094159))**
+​		**2.     [实例分割模型Mask R-CNN详解：从R-CNN，Fast R-CNN，Faster R-CNN再到Mask R-CNN](https://blog.csdn.net/jiongnima/article/details/79094159)**
