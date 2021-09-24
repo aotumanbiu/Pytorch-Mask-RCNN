@@ -36,12 +36,12 @@ torchvision == 0.9.0
 
 在整个过程中你要安装 pycocotools，主要用到其中的IOU计算的库来评价模型的性能。但是这个安装有点复杂，在安装过程中遇到了很多问题，但是通过下面的方法得到了解决。
 1. 到这个[地址](https://pypi.tuna.tsinghua.edu.cn/simple/pycocotools-windows/)根据自己的电脑系统和python版本，找到与之相应的版本，然后把pycocotools对应版本的whl文件直接下载到本地。
-  <div align=center><img src="./src/windows.png" alt="图片alt" title="图片title" style="zoom:50%;" >
+<img src="./src/windows.png" alt="图片alt" title="图片title" style="zoom:50%;" >
 
 
 
 2. 切换到相应的环境，直接 pip install 然后把下载的文件拖进命令行，直接回车即可!!!!!!
-<div align=center><img src="./src/pycocotools.png" alt="图片alt" title="图片title" style="zoom:50%;" />
+<img src="./src/pycocotools.png" alt="图片alt" title="图片title" style="zoom:50%;" />
 
 
 ## 3. 运行
