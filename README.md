@@ -5,13 +5,13 @@
 
 **FasterRCNN结构**
 
-<div align=center><img src="./src/FasterRCNN.png" alt="图片alt" title="图片title" style="zoom:70%;" />
+<img src="./src/FasterRCNN.png" alt="图片alt" title="图片title" style="zoom:70%;" />
 
 ​如上图所示，Faster R-CNN的结构主要分为三大部分，第一部分是共享的卷积层-backbone，第二部分是候选区域生成网络-RPN，第三部分是对候选区域进行分类的网络-classifier。其中，RPN与classifier部分均对目标框有修正。classifier部分是原原本本继承的Fast R-CNN结构。
 
 **MaskRCNN结构**
 
-<div align=center><img src="./src/MaskRCNN.png" alt="图片alt" title="图片title" style="zoom:70%;" />
+<img src="./src/MaskRCNN.png" alt="图片alt" title="图片title" style="zoom:70%;" />
 
 ​		在Mask R-CNN中的RoI Align之后有一个"head"部分，主要作用是将RoI Align的输出维度扩大，这样在预测Mask时会更加精确。在Mask Branch的训练环节，作者没有采用FCN式的SoftmaxLoss，反而是输出了K个Mask预测图(为每一个类都输出一张)，并采用average binary cross-entropy loss训练，当然在训练Mask branch的时候，输出的K个特征图中，也只是对应ground truth类别的那一个特征图对Mask loss有贡献。
 
@@ -57,7 +57,7 @@ python predict.py
 
 ##### 预测结果:
 
-<div align=center><img src="./src/result.png" alt="图片alt" title="图片title" style="zoom:50%;" >
+<img src="./src/result.png" alt="图片alt" title="图片title" style="zoom:50%;" >
 
 
 
