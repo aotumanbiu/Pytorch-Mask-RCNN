@@ -20,7 +20,7 @@
 
 ### 1. 基本环境需要
 
-本人用Win10跑的代码，显卡RTX3060 6G，因为采用的时预训练的backbone(ResNet50 + FPN)，且数据集较小，所以对GPU没有过高的要求。
+&emsp;&emsp;本人用Win10跑的代码，显卡RTX3060 6G，因为采用的时预训练的backbone(ResNet50 + FPN)，且数据集较小，所以对GPU没有过高的要求。
 
 **没有提示安装的，按需要直接pip安装就可以了!!!!**
 
@@ -33,7 +33,7 @@ torchvision == 0.9.0
 
 ### 2. pycocotools的安装
 
-在整个过程中你要安装 pycocotools，主要用到其中的IOU计算的库来评价模型的性能。但是这个安装有点复杂，在安装过程中遇到了很多问题，但是通过下面的方法得到了解决。
+&emsp;&emsp;在整个过程中你要安装 pycocotools，主要用到其中的IOU计算的库来评价模型的性能。但是这个安装有点复杂，在安装过程中遇到了很多问题，但是通过下面的方法得到了解决。
 1. 到这个[地址](https://pypi.tuna.tsinghua.edu.cn/simple/pycocotools-windows/)根据自己的电脑系统和python版本，找到与之相应的版本，然后把pycocotools对应版本的whl文件直接下载到本地。
 <img src="./src/windows.png" alt="图片alt" title="图片title" style="zoom:50%;" >
 
