@@ -9,8 +9,6 @@
 
 ​如上图所示，Faster R-CNN的结构主要分为三大部分，第一部分是共享的卷积层-backbone，第二部分是候选区域生成网络-RPN，第三部分是对候选区域进行分类的网络-classifier。其中，RPN与classifier部分均对目标框有修正。classifier部分是原原本本继承的Fast R-CNN结构。
 
-
-
 **MaskRCNN结构**
 
 <div align=center><img src="./src/MaskRCNN.png" alt="图片alt" title="图片title" style="zoom:70%;" />
