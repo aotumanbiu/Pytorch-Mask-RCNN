@@ -47,7 +47,7 @@ torchvision == 0.9.0
 
 ```python
 # 会保留最后一个Epoch的权重
-python tv-training-code.py
+python training.py
 # 指定GPU训练模型 
 CUDA_VISIBLE_DIVICES= 这里写可用的GUP的序号(例如: 0,1,2,3) python tv-training-code.py
 # 训练结束后，修改 predict.py 里面的权重路径即可进行预测
