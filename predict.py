@@ -72,7 +72,7 @@ def predict(args):
 
 
 if __name__ == "__main__":
-    parse = argparse.ArgumentParser(description="利用torchvision集成工具生成预测结果")
+    parse = argparse.ArgumentParser(description="预测")
     parse.add_argument('--weights-path', type=str, default='MaskRCNN_9.pth')
     parse.add_argument('--img-path', type=str, default='./1.jpg')
     parse.add_argument('--box-conf', type=float, default=0.7)
