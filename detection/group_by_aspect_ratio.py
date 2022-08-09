@@ -1,17 +1,16 @@
 import bisect
-from collections import defaultdict
 import copy
-from itertools import repeat, chain
 import math
-import numpy as np
+from collections import defaultdict
+from itertools import chain, repeat
 
+import numpy as np
 import torch
 import torch.utils.data
+import torchvision
+from PIL import Image
 from torch.utils.data.sampler import BatchSampler, Sampler
 from torch.utils.model_zoo import tqdm
-import torchvision
-
-from PIL import Image
 
 
 def _repeat_to_at_least(iterable, n):
@@ -26,7 +25,7 @@ class GroupedBatchSampler(BatchSampler):
     It enforces that the batch only contain elements from the same group.
     It also tries to provide mini-batches which follows an ordering which is
     as close as possible to the ordering from the original sampler.
-    Arguments:
+    Args:
         sampler (Sampler): Base sampler.
         group_ids (list[int]): If the sampler produces indices in range [0, N),
             `group_ids` must be a list of `N` ints which contains the group id of each sample.
@@ -37,10 +36,7 @@ class GroupedBatchSampler(BatchSampler):
 
     def __init__(self, sampler, group_ids, batch_size):
         if not isinstance(sampler, Sampler):
-            raise ValueError(
-                "sampler should be an instance of "
-                "torch.utils.data.Sampler, but got sampler={}".format(sampler)
-            )
+            raise ValueError(f"sampler should be an instance of torch.utils.data.Sampler, but got sampler={sampler}")
         self.sampler = sampler
         self.group_ids = group_ids
         self.batch_size = batch_size
@@ -69,8 +65,7 @@ class GroupedBatchSampler(BatchSampler):
         if num_remaining > 0:
             # for the remaining batches, take first the buffers with largest number
             # of elements
-            for group_id, _ in sorted(buffer_per_group.items(),
-                                      key=lambda x: len(x[1]), reverse=True):
+            for group_id, _ in sorted(buffer_per_group.items(), key=lambda x: len(x[1]), reverse=True):
                 remaining = self.batch_size - len(buffer_per_group[group_id])
                 samples_from_group_id = _repeat_to_at_least(samples_per_group[group_id], remaining)
                 buffer_per_group[group_id].extend(samples_from_group_id[:remaining])
@@ -86,10 +81,12 @@ class GroupedBatchSampler(BatchSampler):
 
 
 def _compute_aspect_ratios_slow(dataset, indices=None):
-    print("Your dataset doesn't support the fast path for "
-          "computing the aspect ratios, so will iterate over "
-          "the full dataset and load every image instead. "
-          "This might take some time...")
+    print(
+        "Your dataset doesn't support the fast path for "
+        "computing the aspect ratios, so will iterate over "
+        "the full dataset and load every image instead. "
+        "This might take some time..."
+    )
     if indices is None:
         indices = range(len(dataset))
 
@@ -105,9 +102,12 @@ def _compute_aspect_ratios_slow(dataset, indices=None):
 
     sampler = SubsetSampler(indices)
     data_loader = torch.utils.data.DataLoader(
-        dataset, batch_size=1, sampler=sampler,
+        dataset,
+        batch_size=1,
+        sampler=sampler,
         num_workers=14,  # you might want to increase it for faster processing
-        collate_fn=lambda x: x[0])
+        collate_fn=lambda x: x[0],
+    )
     aspect_ratios = []
     with tqdm(total=len(dataset)) as pbar:
         for _i, (img, _) in enumerate(data_loader):
@@ -191,6 +191,6 @@ def create_aspect_ratio_groups(dataset, k=0):
     # count number of elements per group
     counts = np.unique(groups, return_counts=True)[1]
     fbins = [0] + bins + [np.inf]
-    print("Using {} as bins for aspect ratio quantization".format(fbins))
-    print("Count of instances per bin: {}".format(counts))
+    print(f"Using {fbins} as bins for aspect ratio quantization")
+    print(f"Count of instances per bin: {counts}")
     return groups

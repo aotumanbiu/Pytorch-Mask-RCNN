@@ -1,4 +1,3 @@
-# Sample code from the TorchVision 0.3 Object Detection Finetuning Tutorial
 # http://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 
 import os
@@ -10,30 +9,24 @@ import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 
-from engine import train_one_epoch, evaluate
-import utils
-import transforms as T
+from detection.engine import train_one_epoch, evaluate
+import detection.utils as utils
+import detection.transforms as T
 
 
 class PennFudanDataset(object):
     def __init__(self, root, transforms):
         self.root = root
         self.transforms = transforms
-        # load all image files, sorting them to
-        # ensure that they are aligned
         self.imgs = list(sorted(os.listdir(os.path.join(root, "PNGImages"))))
         self.masks = list(sorted(os.listdir(os.path.join(root, "PedMasks"))))
 
     def __getitem__(self, idx):
-        # load images and masks
         img_path = os.path.join(self.root, "PNGImages", self.imgs[idx])
         mask_path = os.path.join(self.root, "PedMasks", self.masks[idx])
         img = Image.open(img_path).convert("RGB")
-        # note that we haven't converted the mask to RGB,
-        # because each color corresponds to a different instance
-        # with 0 being background
-        mask = Image.open(mask_path)
 
+        mask = Image.open(mask_path)
         mask = np.array(mask)
         # instances are encoded as different colors
         obj_ids = np.unique(mask)
@@ -81,31 +74,27 @@ class PennFudanDataset(object):
     def __len__(self):
         return len(self.imgs)
 
+
 def get_model_instance_segmentation(num_classes):
-    # load an instance segmentation model pre-trained pre-trained on COCO
-    model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
+    # model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
+    model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=False)
 
     # get number of input features for the classifier
-    # 获取分类器输入特征的数量
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     # replace the pre-trained head with a new one
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
     # now get the number of input features for the mask classifier
-    #  现在获取掩码分类器的输入特征数
     in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
     hidden_layer = 256
     # and replace the mask predictor with a new one
-    model.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask,
-                                                       hidden_layer,
-                                                       num_classes)
+    model.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask, hidden_layer, num_classes)
 
     return model
 
 
 def get_transform(train):
-    transforms = []
-    transforms.append(T.ToTensor())
+    transforms = [T.ToTensor()]
     if train:
         transforms.append(T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
@@ -122,17 +111,18 @@ def main():
     dataset_test = PennFudanDataset('PennFudanPed', get_transform(train=False))
 
     # split the dataset in train and test set
+    # 这里只使用了数据中的一部分进行训练和测试
     indices = torch.randperm(len(dataset)).tolist()
     dataset = torch.utils.data.Subset(dataset, indices[:-50])
     dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])
 
     # define training and validation data loaders
     data_loader = torch.utils.data.DataLoader(
-        dataset, batch_size=2, shuffle=True, num_workers=4,
+        dataset, batch_size=2, shuffle=True, num_workers=0,
         collate_fn=utils.collate_fn)
 
     data_loader_test = torch.utils.data.DataLoader(
-        dataset_test, batch_size=1, shuffle=False, num_workers=4,
+        dataset_test, batch_size=1, shuffle=False, num_workers=0,
         collate_fn=utils.collate_fn)
 
     # get the model using our helper function
@@ -149,7 +139,6 @@ def main():
 
     # let's train it for 10 epochs
     num_epochs = 10
-
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
         train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
@@ -158,8 +147,8 @@ def main():
         # evaluate on the test dataset
         evaluate(model, data_loader_test, device=device)
 
-    torch.save(model.state_dict(), 'model.pth')
     print("That's it!")
-    
+
+
 if __name__ == "__main__":
     main()
