@@ -1,15 +1,11 @@
 import torch
 import torchvision
-import cv2
-import random
 import time
-import json
 import numpy as np
 import argparse
 from PIL import Image
 
 from torchvision import transforms
-from torchvision.io import ImageReadMode, read_image
 import matplotlib.pyplot as plt
 
 from detection.draw_box_utils import draw_objs
