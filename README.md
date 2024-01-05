@@ -46,7 +46,7 @@ torchvision == 0.12.0
 
 ```python
 # 开始训练
-python training.py
+python train.py
 # 指定GPU训练模型 
 CUDA_VISIBLE_DIVICES= 这里写可用的GUP的序号(例如: 0,1,2,3) python train.py
 # 修改 predict.py 里面的权重路径以及相关参数即可预测
