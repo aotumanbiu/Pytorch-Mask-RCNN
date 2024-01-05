@@ -101,22 +101,20 @@ def get_transform(train):
 
 
 def main():
-    # train on the GPU or on the CPU, if a GPU is not available
+    # 判断当前机器的GPU是否可用
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    # our dataset has two classes only - background and person
     num_classes = 2
     # use our dataset and defined transformations
     dataset = PennFudanDataset('PennFudanPed', get_transform(train=True))
     dataset_test = PennFudanDataset('PennFudanPed', get_transform(train=False))
 
-    # split the dataset in train and test set
     # 这里只使用了数据中的一部分进行训练和测试
     indices = torch.randperm(len(dataset)).tolist()
     dataset = torch.utils.data.Subset(dataset, indices[:-50])
     dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])
 
-    # define training and validation data loaders
+    # 定义训练和测试数据加载器
     data_loader = torch.utils.data.DataLoader(
         dataset, batch_size=2, shuffle=True, num_workers=0,
         collate_fn=utils.collate_fn)
@@ -128,23 +126,21 @@ def main():
     # get the model using our helper function
     model = get_model_instance_segmentation(num_classes)
 
-    # move model to the right device
+    # 将模型放到响应的设备上
     model.to(device)
 
-    # construct an optimizer
+    # 创建一个优化器
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
-    # and a learning rate scheduler
+    # 设置学习率和调整策略
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-    # let's train it for 10 epochs
     num_epochs = 10
     for epoch in range(num_epochs):
-        # train for one epoch, printing every 10 iterations
         train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
-        # update the learning rate
+        # 调整学习率
         lr_scheduler.step()
-        # evaluate on the test dataset
+        # 评估模型
         evaluate(model, data_loader_test, device=device)
 
     print("That's it!")
